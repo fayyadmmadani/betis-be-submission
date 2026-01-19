@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 1. MODEL JALUR PENDAKIAN (MOUNTAIN TRAILS)
+model Trail {
+  id        String   @id @default(uuid()) // ID Unik UUID [cite: 17]
+  name      String   // Nama Jalur [cite: 17]
+  difficulty Difficulty // Tingkat Kesulitan (Enum) [cite: 17]
+  openedAt  DateTime // Tanggal Dibuka [cite: 18]
+  isOpen    Boolean  @default(true) // Status (Buka/Tutup) [cite: 21]
+
+  // Relasi: Satu jalur bisa punya banyak izin
+  permits   Permit[] 
+}
+
+// 2. MODEL PENDAKI (HIKERS)
+model Hiker {
+  id        String   @id @default(uuid()) // ID Unik UUID [cite: 28]
+  name      String   // Nama Lengkap [cite: 28]
+  age       Int      // Usia [cite: 28]
+  level     HikerLevel // Level Pendaki (Enum) [cite: 28]
+
+  // Relasi: Satu pendaki bisa punya banyak izin
+  permits   Permit[]
+}
+
+// 3. MODEL IZIN (PERMITS/SIMAKSI)
+model Permit {
+  id        String   @id @default(uuid()) // ID Unik UUID [cite: 32]
+  
+  // Relasi ke Pendaki [cite: 32]
+  hikerId   String
+  hiker     Hiker    @relation(fields: [hikerId], references: [id])
+
+  // Relasi ke Jalur [cite: 32]
+  trailId   String
+  trail     Trail    @relation(fields: [trailId], references: [id])
+
+  date      DateTime // Tanggal Izin [cite: 32]
+}
+
+// DEFINISI ENUM (Pilihan Tetap)
+enum Difficulty {
+  BEGINNER
+  MODERATE
+  HARD
+  EXTREME
+}
+
+enum HikerLevel {
+  NEWBIE
+  HIKER
+  PORTER
+  RANGER
+}
