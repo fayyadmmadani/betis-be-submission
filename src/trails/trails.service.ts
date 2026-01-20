@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common'; // <--- Tambah NotFoundException
 import { CreateTrailDto } from './dto/create-trail.dto';
 import { UpdateTrailDto } from './dto/update-trail.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TrailsService {
   constructor(private prisma: PrismaService) {}
 
-  // 1. CREATE (Sudah kita buat tadi)
+  // CREATE
   async create(createTrailDto: CreateTrailDto) {
     return this.prisma.trail.create({
       data: {
@@ -19,26 +19,33 @@ export class TrailsService {
     });
   }
 
-  // 2. READ ALL (Lihat Semua)
+  // FIND ALL
   async findAll() {
     return this.prisma.trail.findMany();
   }
 
-  // 3. READ ONE (Lihat Satu Detail)
+  // FIND ONE
   async findOne(id: string) {
-    // Perhatikan: tipe datanya string (UUID)
-    return this.prisma.trail.findUnique({
+    const trail = await this.prisma.trail.findUnique({
       where: { id },
     });
+
+    // Error handling
+    if (!trail) {
+      throw new NotFoundException(`Jalur dengan ID ${id} tidak ditemukan`);
+    }
+
+    return trail;
   }
 
-  // 4. UPDATE (Edit Data)
+  // UPDATE
   async update(id: string, updateTrailDto: UpdateTrailDto) {
+    await this.findOne(id);
+
     return this.prisma.trail.update({
       where: { id },
       data: {
         ...updateTrailDto,
-        // Jika user mengupdate tanggal, kita konversi lagi ke Date object
         openedAt: updateTrailDto.openedAt
           ? new Date(updateTrailDto.openedAt)
           : undefined,
@@ -46,8 +53,10 @@ export class TrailsService {
     });
   }
 
-  // 5. DELETE (Hapus Data)
+  // DELETE
   async remove(id: string) {
+    await this.findOne(id);
+
     return this.prisma.trail.delete({
       where: { id },
     });

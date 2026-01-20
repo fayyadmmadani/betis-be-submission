@@ -4,8 +4,8 @@ services:
     container_name: betis_postgres
     restart: always
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
       POSTGRES_DB: betis_db
     ports:
       - '5432:5432'

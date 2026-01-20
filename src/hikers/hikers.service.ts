@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common'; // <--- Tambah NotFoundException
 import { CreateHikerDto } from './dto/create-hiker.dto';
 import { UpdateHikerDto } from './dto/update-hiker.dto';
-import { PrismaService } from 'src/prisma/prisma.service'; // Import Prisma
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class HikersService {
@@ -19,23 +19,34 @@ export class HikersService {
     return this.prisma.hiker.findMany();
   }
 
-  // FIND ONE (ID string)
+  // FIND ONE
   async findOne(id: string) {
-    return this.prisma.hiker.findUnique({
+    const hiker = await this.prisma.hiker.findUnique({
       where: { id },
     });
+
+    // Error handling
+    if (!hiker) {
+      throw new NotFoundException(`Pendaki dengan ID ${id} tidak ditemukan`);
+    }
+
+    return hiker;
   }
 
-  // UPDATE (ID string)
+  // UPDATE
   async update(id: string, updateHikerDto: UpdateHikerDto) {
+    await this.findOne(id);
+
     return this.prisma.hiker.update({
       where: { id },
       data: updateHikerDto,
     });
   }
 
-  // REMOVE (ID string)
+  // DELETE
   async remove(id: string) {
+    await this.findOne(id);
+
     return this.prisma.hiker.delete({
       where: { id },
     });

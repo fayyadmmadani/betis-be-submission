@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Difficulty } from '@prisma/client';
 import {
   IsBoolean,
   IsDateString,
@@ -6,22 +8,39 @@ import {
   IsString,
   IsOptional,
 } from 'class-validator';
-import { Difficulty } from '@prisma/client'; // Import Enum dari Prisma
 
 export class CreateTrailDto {
+  @ApiProperty({
+    example: 'Via Selo',
+    description: 'Nama jalur pendakian',
+  })
   @IsString()
   @IsNotEmpty()
-  name: string; // Wajib: Nama jalur (String)
+  name: string;
 
+  @ApiProperty({
+    enum: Difficulty,
+    example: 'MODERATE',
+    description: 'Tingkat kesulitan jalur',
+  })
   @IsEnum(Difficulty)
   @IsNotEmpty()
-  difficulty: Difficulty; // Wajib: Pilihan (BEGINNER, MODERATE, dll)
+  difficulty: Difficulty;
 
+  @ApiProperty({
+    example: '2024-08-17T08:00:00Z',
+    description: 'Tanggal jalur dibuka (ISO 8601)',
+  })
   @IsDateString()
   @IsNotEmpty()
-  openedAt: string; // Wajib: Tanggal (Format ISO 8601)
+  openedAt: string;
 
+  @ApiProperty({
+    example: true,
+    required: false,
+    description: 'Status apakah jalur dibuka untuk umum',
+  })
   @IsBoolean()
-  @IsOptional() // Tidak wajib (karena defaultnya true/buka)
+  @IsOptional()
   isOpen?: boolean;
 }
