@@ -19,7 +19,7 @@ model Trail {
   name      String   
   difficulty Difficulty // Enum
   openedAt  DateTime 
-  isOpen    Boolean  @default(true) // Status
+  isOpen    Boolean  @default(true) // Status, anggapan jalur dibuka saat dibuat
 
   // Relasi: Satu jalur bisa punya banyak izin
   permits   Permit[] 
