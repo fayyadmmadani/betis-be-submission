@@ -7,5 +7,13 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "collectCoverageFrom": ["src/**/*.(t|j)s"],
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    ".module.ts",
+    ".spec.ts",
+    "main.ts",
+    "entity.ts",
+    "dto.ts"
+  ],
   "coverageDirectory": "./coverage-e2e"
 }
