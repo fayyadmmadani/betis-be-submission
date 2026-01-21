@@ -7,9 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { TrailsService } from './trails.service';
-import { CreateTrailDto } from './dto/create-trail.dto';
-import { UpdateTrailDto } from './dto/update-trail.dto';
+import { TrailsService } from '../services/trails.service';
+import { CreateTrailDto } from '../dto/create-trail.dto';
+import { UpdateTrailDto } from '../dto/update-trail.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Trails')

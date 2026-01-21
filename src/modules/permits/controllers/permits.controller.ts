@@ -7,9 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { PermitsService } from './permits.service';
-import { CreatePermitDto } from './dto/create-permit.dto';
-import { UpdatePermitDto } from './dto/update-permit.dto';
+import { PermitsService } from '../services/permits.service';
+import { CreatePermitDto } from '../dto/create-permit.dto';
+import { UpdatePermitDto } from '../dto/update-permit.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Permits')

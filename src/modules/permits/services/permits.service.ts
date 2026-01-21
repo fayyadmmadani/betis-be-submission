@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePermitDto } from './dto/create-permit.dto';
-import { UpdatePermitDto } from './dto/update-permit.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { CreatePermitDto } from '../dto/create-permit.dto';
+import { UpdatePermitDto } from '../dto/update-permit.dto';
+import { PrismaService } from '../../../config/prisma/prisma.service';
 
 @Injectable()
 export class PermitsService {

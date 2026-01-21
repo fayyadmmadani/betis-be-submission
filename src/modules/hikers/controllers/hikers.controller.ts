@@ -7,9 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { HikersService } from './hikers.service';
-import { CreateHikerDto } from './dto/create-hiker.dto';
-import { UpdateHikerDto } from './dto/update-hiker.dto';
+import { HikersService } from '../services/hikers.service';
+import { CreateHikerDto } from '../dto/create-hiker.dto';
+import { UpdateHikerDto } from '../dto/update-hiker.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Hikers')

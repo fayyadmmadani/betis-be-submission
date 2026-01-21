@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { HikersService } from './hikers.service';
-import { HikersController } from './hikers.controller';
+import { HikersService } from './services/hikers.service';
+import { HikersController } from './controllers/hikers.controller';
 
 @Module({
   controllers: [HikersController],

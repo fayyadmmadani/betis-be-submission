@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TrailsService } from './trails.service';
-import { TrailsController } from './trails.controller';
+import { TrailsService } from './services/trails.service';
+import { TrailsController } from './controllers/trails.controller';
 
 @Module({
   controllers: [TrailsController],

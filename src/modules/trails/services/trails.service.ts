@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'; // <--- Tambah NotFoundException
-import { CreateTrailDto } from './dto/create-trail.dto';
-import { UpdateTrailDto } from './dto/update-trail.dto';
-import { PrismaService } from '../prisma/prisma.service';
+import { CreateTrailDto } from '../dto/create-trail.dto';
+import { UpdateTrailDto } from '../dto/update-trail.dto';
+import { PrismaService } from '../../../config/prisma/prisma.service';
 
 @Injectable()
 export class TrailsService {
