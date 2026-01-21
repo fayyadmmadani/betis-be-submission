@@ -45,7 +45,9 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  // --- SKENARIO TEST ---
+  // --- SCENARIO TEST ---
+
+  // - CREATE -
 
   // Trails Post
   it('/trails (POST) - Create Trail', async () => {
@@ -108,5 +110,94 @@ describe('AppController (e2e)', () => {
         date: '2026-05-20T08:00:00Z',
       })
       .expect(404);
+  });
+
+  // - READ -
+
+  // Get All Trails
+  it('/trails (GET) - Get All Trails', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/trails')
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+
+    expect((response.body as Array<unknown>).length).toBeGreaterThan(0);
+  });
+
+  // Get Trail By ID
+  it('/trails/:id (GET) - Get Detail Trail', async () => {
+    const response = await request(app.getHttpServer())
+      .get(`/trails/${trailId}`)
+      .expect(200);
+
+    const body = response.body as IdResponse & { name: string };
+    expect(body.id).toEqual(trailId);
+    expect(body.name).toEqual('Gunung E2E Test');
+  });
+
+  // Get Hiker By ID
+  it('/hikers/:id (GET) - Get Detail Hiker', async () => {
+    const response = await request(app.getHttpServer())
+      .get(`/hikers/${hikerId}`)
+      .expect(200);
+
+    const body = response.body as IdResponse & { name: string };
+    expect(body.id).toEqual(hikerId);
+    expect(body.name).toEqual('Robot Tester');
+  });
+
+  // - UPDATE -
+
+  // Update Trail (PATCH)
+  it('/trails/:id (PATCH) - Update Trail', async () => {
+    const response = await request(app.getHttpServer())
+      .patch(`/trails/${trailId}`)
+      .send({
+        name: 'Gunung E2E Updated',
+        difficulty: 'HARD',
+      })
+      .expect(200);
+
+    const body = response.body as IdResponse & {
+      name: string;
+      difficulty: string;
+    };
+
+    expect(body.id).toEqual(trailId);
+    expect(body.name).toEqual('Gunung E2E Updated');
+    expect(body.difficulty).toEqual('HARD');
+  });
+
+  // - DELETE -
+
+  // Delete Permit (DELETE)
+  it('/permits/:id (DELETE) - Delete Permit', async () => {
+    const permitsRes = await request(app.getHttpServer())
+      .get('/permits')
+      .expect(200);
+
+    const permits = permitsRes.body as PermitResponse[];
+
+    if (permits.length === 0) {
+      throw new Error('Tidak ada permit untuk dihapus (Test Delete Gagal)');
+    }
+
+    const permitIdToDelete = permits[0].id;
+
+    await request(app.getHttpServer())
+      .delete(`/permits/${permitIdToDelete}`)
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .get(`/permits/${permitIdToDelete}`)
+      .expect(404);
+  });
+
+  // 3. Delete Hiker (DELETE)
+  it('/hikers/:id (DELETE) - Delete Hiker', async () => {
+    await request(app.getHttpServer()).delete(`/hikers/${hikerId}`).expect(200);
+
+    await request(app.getHttpServer()).get(`/hikers/${hikerId}`).expect(404);
   });
 });
