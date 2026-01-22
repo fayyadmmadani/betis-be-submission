@@ -8,6 +8,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
+  app.enableCors();
+
   // --- CONFIG SWAGGER ---
   const config = new DocumentBuilder()
     .setTitle("The Ranger's Outpost API")
@@ -21,8 +23,5 @@ async function bootstrap() {
 
   await app.listen(process.env.PORT || 3000);
 }
-// Error handling
-bootstrap().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+export default bootstrap;
+void bootstrap();
