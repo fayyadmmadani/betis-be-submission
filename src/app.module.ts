@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { TrailsModule } from './modules/trails/trails.module';
 import { HikersModule } from './modules/hikers/hikers.module';
 import { PermitsModule } from './modules/permits/permits.module';
