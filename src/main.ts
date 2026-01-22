@@ -19,7 +19,7 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document); // localhost:3000/api-docs
   // --- END CONFIG SWAGGER ---
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 // Error handling
 bootstrap().catch((err) => {
