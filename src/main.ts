@@ -21,7 +21,11 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document); // localhost:3000/api-docs
   // --- END CONFIG SWAGGER ---
 
-  await app.listen(process.env.PORT || 3000);
+  if (process.env.VERCEL) {
+    await app.init();
+  } else {
+    await app.listen(process.env.PORT || 3000);
+  }
 }
 export default bootstrap;
 void bootstrap();
