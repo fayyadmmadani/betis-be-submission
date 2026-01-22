@@ -2,97 +2,125 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# The Ranger's Outpost API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Backend Service untuk sistem manajemen jalur pendakian, data pendaki, dan perizinan (permits). Dibangun menggunakan **NestJS**, **Prisma**, dan **PostgreSQL**.
 
-## Description
+## 📋 Prerequisites (Prasyarat)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Sebelum menjalankan aplikasi, pastikan di komputer Anda sudah terinstall:
 
-## Project setup
+- [Node.js](https://nodejs.org/en/) (Versi 18 atau terbaru disarankan)
+- [PostgreSQL](https://www.postgresql.org/) (Pastikan service database berjalan)
+- [Docker & Docker Compose](https://www.docker.com/) (Opsional, jika ingin setup database via Docker)
 
-```bash
-$ npm install
+## ⚙️ Installation
+
+1. Clone repository ini:
+   ```bash
+   git clone <URL_REPOSITORY_ANDA>
+   cd <NAMA_FOLDER_PROJECT>
+
 ```
 
-## Compile and run the project
+2. Install dependencies:
+```bash
+npm install
+
+```
+
+
+
+## 🔧 Environment Setup (.env)
+
+Aplikasi ini membutuhkan file `.env` untuk konfigurasi database.
+
+1. Buat file bernama `.env` di root folder project.
+2. Salin konfigurasi berikut ke dalamnya:
+
+```env
+# Sesuaikan USER, PASSWORD, dan DB_NAME dengan PostgreSQL lokal Anda
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/DB_NAME?schema=public"
+
+# Port Aplikasi (Default 3000)
+PORT=3000
+
+```
+
+> **Catatan:** Jika Anda menggunakan kredensial database yang berbeda (misal username bukan `USER` atau password berbeda), harap sesuaikan bagian `USER:PASSWORD` di atas.
+
+## 🗄️ Database Setup
+
+Anda memiliki dua opsi untuk menyiapkan database:
+
+### Opsi 1: Menggunakan Docker (Disarankan)
+
+Jika Anda memiliki Docker, Anda dapat menjalankan database PostgreSQL secara instan tanpa install manual.
 
 ```bash
-# development
-$ npm run start
+# Jalankan container database
+docker-compose up -d
 
-# watch mode
-$ npm run start:dev
+# Push skema database (Membuat tabel)
+npx prisma db push
+
+```
+
+### Opsi 2: Manual (Tanpa Docker)
+
+1. Buat database baru di PostgreSQL Anda dengan nama `DB_NAME` (atau sesuai nama di .env).
+2. Jalankan perintah migrasi Prisma untuk membuat tabel:
+```bash
+npx prisma db push
+# Atau jika ingin menggunakan migration history:
+# npx prisma migrate dev --name init
+
+```
+
+
+3. (Opsional) Generate Prisma Client (biasanya otomatis, tapi jika error lakukan ini):
+```bash
+npx prisma generate
+
+```
+
+
+
+## 🚀 Running the App
+
+Setelah database siap, jalankan aplikasi:
+
+```bash
+# development mode
+npm run start
+
+# watch mode (auto-reload saat coding)
+npm run start:dev
 
 # production mode
-$ npm run start:prod
+npm run start:prod
+
 ```
 
-## Run tests
+Aplikasi akan berjalan di: `http://localhost:3000`
+
+## 📖 API Documentation (Swagger)
+
+Dokumentasi API lengkap tersedia via Swagger UI. Setelah aplikasi berjalan, buka browser dan akses:
+
+👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+
+Di sana Anda dapat melihat daftar endpoint untuk `Hikers`, `Trails`, dan `Permits` serta mencobanya langsung (Try it out).
+
+## 🧪 Running Tests
+
+Untuk menjalankan End-to-End (E2E) testing:
 
 ```bash
-# unit tests
-$ npm run test
+npm run test:e2e
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Deployment
+## 👤 Author
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+* Nama: Fayyad M Madani
