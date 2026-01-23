@@ -124,3 +124,5 @@ npm run test:e2e
 ## 👤 Author
 
 * Nama: Fayyad M Madani
+* NPM: 2506622720
+* Angkatan: 2025
